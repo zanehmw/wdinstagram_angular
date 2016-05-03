@@ -9,7 +9,8 @@
     "$stateProvider",
     RouterFunction
   ])
-  .controller("PicIndexController", PicIndexController)
+  .controller("PicIndexController", PicIndexControllerFunc)
+  .controller("PicShowController", PicShowControllerFunc)
 
   function RouterFunction($stateProvider) {
     $stateProvider
@@ -21,7 +22,9 @@
     })
     .state("picShow", {
       url: "/index/:id",
-      templateUrl: "js/show.html"
+      templateUrl: "js/show.html",
+      controller: "PicShowController",
+      controllerAs: "showVm"
     });
   }
 
@@ -43,9 +46,14 @@
     }
   ]
 
-  function PicIndexController() {
+  function PicIndexControllerFunc() {
     var indexVm = this;
     indexVm.pics = pics;
   }
+  PicShowControllerFunc.$inject = [ "$stateParams"];
+  function PicShowControllerFunc($stateParams) {
+    var showVm = this;
+    showVm.pic = pics[$stateParams.id];
+  };
 
 })();
