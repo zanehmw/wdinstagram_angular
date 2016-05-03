@@ -1,6 +1,19 @@
 <h1>WDInstagram Show</h1>
-<div>
-  <img data-ng-src="{{showVm.pic.photo_url}}">
-  <p>{{showVm.pic.author}}</p>
-  <p>{{showVm.pic.body}}</p>
-</div>
+jenwk
+<img data-ng-src="{{showVm.pic.photo_url}}"></img>
+<p>{{showVm.pic.author}}</p>
+<p>{{showVm.grumble.body}}</p>
+
+  <button data-ng-hide="editPic" data-ng-click="editPic = !editPic">Edit Pic</button>
+  <form data-ng-show="editPic">
+    <label>Photo URL</label>
+    <input type="text" name="newPic" data-ng-model="showVm.pic">
+    <label>Author</label>
+    <input type="text" name="newPic" data-ng-model="showVm.pic">
+    <label>Body</label>
+    <input type="text" name="newPic" data-ng-model="showVm.pic">
+
+    <button class="update" data-ng-click="showVm.update(); editPic = !editPic">Save</button>
+    <button class="cancel" data-ng-click="editPic = !editPic">Cancel</button>
+    <button class="delete" data-ui-sref="picIndex" data-ng-click="showVm.delete()">Delete</button>
+  </form>

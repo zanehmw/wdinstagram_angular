@@ -49,11 +49,26 @@
   function PicIndexControllerFunc() {
     var indexVm = this;
     indexVm.pics = pics;
+    indexVm.newPic = "";
+
+    indexVm.create = function() {
+      pics.unshift({title: indexVm.newPic});
+      indexVm.newPic = "";
+    };
   }
+
   PicShowControllerFunc.$inject = [ "$stateParams"];
   function PicShowControllerFunc($stateParams) {
     var showVm = this;
-    showVm.pic = pics[$stateParams.id];
+    showVm.pic = pics[$stateParams.id].title;
+
+    showVm.update = function() {
+      pics[$stateParams.id].title = showVm.pic;
+    };
+
+    showVm.delete = function() {
+      pics.splice( $stateParams.id, 1);
+    }  
   };
 
 })();
