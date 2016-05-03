@@ -9,6 +9,6 @@
 </form>
 
 <div data-ng-repeat="pic in indexVm.pics">
-<p><a data-ui-sref="picShow({id: $index})"><img data-ng-src="{{pic.photo_url}}"></a></p>
+<p><a data-ui-sref="picShow({id: pic.id})"><img data-ng-src="{{pic.photo_url}}"></a></p>
 
 </div>

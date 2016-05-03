@@ -12,6 +12,7 @@
   ])
   .controller("PicIndexController", PicIndexControllerFunc)
   .controller("PicShowController", PicShowControllerFunc)
+  .factory("PicFactory", PicFactoryFunc);
 
   function RouterFunction($stateProvider) {
     $stateProvider
@@ -28,31 +29,36 @@
       controllerAs: "showVm"
     });
   }
-  PicIndexControllerFunc.$inject = [ "$resource" ];
-  function PicIndexControllerFunc($resource) {
-    var indexVm = this;
-    indexVm.pics = $resource("http://localhost:3000/entries").query();
-    indexVm.newPic = "";
 
-    indexVm.create = function() {
-      pics.unshift({title: indexVm.newPic});
-      indexVm.newPic = "";
+PicFactoryFunc.$inject = [ "$resource" ];
+function PicFactoryFunc($resource) {
+  return $resource("http://localhost:3000/entries/:id")
+}
+
+  PicIndexControllerFunc.$inject = [ "PicFactory" ];
+  function PicIndexControllerFunc(PicFactory) {
+    var indexVm = this;
+    indexVm.pics = PicFactory.query();
+    indexVm.newPic = new PicFactory();
+
+    indexVm.create = function($state) {
+      indexVm.newPic.$save().then(function(res) {
+        indexVm.pics.push(res)
+      })
     };
   }
 
-  PicShowControllerFunc.$inject = [ "$stateParams"];
-  function PicShowControllerFunc($stateParams) {
+  PicShowControllerFunc.$inject = [ "PicFactory", "$stateParams"];
+  function PicShowControllerFunc(PicFactory, $stateParams) {
     var showVm = this;
-    showVm.pic = $resource("http://localhost:3000/entries").get({id:$stateParams.id},
-      function() {}
-    );
+    showVm.pic = PicFactory.get({id: $stateParams.id});
 
     showVm.update = function() {
       pics[$stateParams.id].title = showVm.pic;
     };
 
     showVm.delete = function() {
-      pics.splice( $stateParams.id, 1);
+      showVm.pic.$delete({id: $stateParams.id})
     }
   };
 
