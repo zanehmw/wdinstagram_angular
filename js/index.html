@@ -1,0 +1,7 @@
+<h2>I'm the WDI Index</h2>
+<div data-ng-repeat="pic in indexVm.pics">
+<p>
+  <a data-ui-sref="picShow({id: $index})">{{pic.author}}</a>
+</p>
+
+</div>
