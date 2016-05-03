@@ -3,7 +3,8 @@
 (function(){
   angular
   .module("wdinstagram", [
-    "ui.router"
+    "ui.router",
+    "ngResource"
   ])
   .config([
     "$stateProvider",
@@ -27,28 +28,10 @@
       controllerAs: "showVm"
     });
   }
-
-  var pics = [
-    {
-      photo_url: "http://s3-media4.fl.yelpcdn.com/bphoto/6Cb6_yk8GErfdKViOAQGow/o.jpg",
-      author:"Zaneh",
-      body: "I like pizza"
-    },
-    {
-      photo_url: "http://static5.techinsider.io/image/5660a0e884307621008b73a3-2518-1268/jon-snow-game-of-thrones.png",
-      author: "Sally",
-      body: "I like to watch tv"
-    },
-    {
-      photo_url: "http://www.jobacle.com/wp-content/uploads/2016/03/air-760325_960_720.jpg",
-      author: "Sam",
-      body: "I like to travel"
-    }
-  ]
-
-  function PicIndexControllerFunc() {
+  PicIndexControllerFunc.$inject = [ "$resource" ];
+  function PicIndexControllerFunc($resource) {
     var indexVm = this;
-    indexVm.pics = pics;
+    indexVm.pics = $resource("http://localhost:3000/entries").query();
     indexVm.newPic = "";
 
     indexVm.create = function() {
@@ -60,7 +43,9 @@
   PicShowControllerFunc.$inject = [ "$stateParams"];
   function PicShowControllerFunc($stateParams) {
     var showVm = this;
-    showVm.pic = pics[$stateParams.id].title;
+    showVm.pic = $resource("http://localhost:3000/entries").get({id:$stateParams.id},
+      function() {}
+    );
 
     showVm.update = function() {
       pics[$stateParams.id].title = showVm.pic;
@@ -68,7 +53,7 @@
 
     showVm.delete = function() {
       pics.splice( $stateParams.id, 1);
-    }  
+    }
   };
 
 })();

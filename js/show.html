@@ -2,16 +2,16 @@
 
 <img data-ng-src="{{showVm.pic.photo_url}}"></img>
 <p>{{showVm.pic.author}}</p>
-<p>{{showVm.grumble.body}}</p>
+<p>{{showVm.pic.body}}</p>
 
   <button data-ng-hide="editPic" data-ng-click="editPic = !editPic">Edit Pic</button>
   <form data-ng-show="editPic">
     <label>Photo URL</label>
-    <input type="text" name="newPic" data-ng-model="showVm.pic">
+    <input type="text" name="newPic" data-ng-model="showVm.pic.photo_url">
     <label>Author</label>
-    <input type="text" name="newPic" data-ng-model="showVm.pic">
+    <input type="text" name="newPic" data-ng-model="showVm.pic.author">
     <label>Body</label>
-    <input type="text" name="newPic" data-ng-model="showVm.pic">
+    <input type="text" name="newPic" data-ng-model="showVm.pic.body">
 
     <button class="update" data-ng-click="showVm.update(); editPic = !editPic">Save</button>
     <button class="cancel" data-ng-click="editPic = !editPic">Cancel</button>
