@@ -1,0 +1,24 @@
+<div>
+  <p><a data-ui-sref="picShow({id: pic.id})"><img data-ng-src="{{pic.photo_url}}"></a></p>
+
+
+  <div data-ng-if="showEdit">
+    <p>{{pic.author}}</p>
+    <p>{{pic.body}}</p>
+
+
+    <button data-ng-hide="editPic" data-ng-click="editPic = !editPic">Edit Pic</button>
+    <form data-ng-show="editPic">
+      <label>Photo URL</label>
+      <input type="text" name="newPic" data-ng-model="pic.photo_url">
+      <label>Author</label>
+      <input type="text" name="newPic" data-ng-model="pic.author">
+      <label>Body</label>
+      <input type="text" name="newPic" data-ng-model="pic.body">
+
+      <button class="update" data-ng-click="update(); editPic = !editPic">Save</button>
+      <button class="cancel" data-ng-click="editPic = !editPic">Cancel</button>
+      <button class="delete" data-ui-sref="picIndex" data-ng-click="delete()">Delete</button>
+    </form>
+  </div>
+</div>

@@ -12,7 +12,28 @@
   ])
   .controller("PicIndexController", PicIndexControllerFunc)
   .controller("PicShowController", PicShowControllerFunc)
-  .factory("PicFactory", PicFactoryFunc);
+  .factory("PicFactory", PicFactoryFunc)
+  .directive("pic", ["$stateParams", function($stateParams) {
+    return {
+      templateUrl: "js/_pic.html",
+      restrict: "E",
+      replace: true,
+      scope: {
+        pic: "=",
+        showEdit: "="
+      },
+      link: function(scope) {
+        console.log(scope)
+        scope.update = function() {
+          scope.pic.$update({id: scope.pic.id});
+        };
+
+        scope.delete = function() {
+          scope.pic.$delete({id: scope.pic.id})
+        }
+      }
+    }
+  }]);
 
   function RouterFunction($stateProvider) {
     $stateProvider
@@ -23,7 +44,7 @@
       controllerAs: "indexVm"
     })
     .state("picShow", {
-      url: "/index/:id",
+      url: "/pics/:id",
       templateUrl: "js/show.html",
       controller: "PicShowController",
       controllerAs: "showVm"
@@ -56,13 +77,6 @@ function PicFactoryFunc($resource) {
     var showVm = this;
     showVm.pic = PicFactory.get({id: $stateParams.id});
 
-    showVm.update = function() {
-      showVm.pic.$update({id: $stateParams.id});
-    };
-
-    showVm.delete = function() {
-      showVm.pic.$delete({id: $stateParams.id})
-    }
   };
 
 })();
