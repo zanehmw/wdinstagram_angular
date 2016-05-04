@@ -32,7 +32,9 @@
 
 PicFactoryFunc.$inject = [ "$resource" ];
 function PicFactoryFunc($resource) {
-  return $resource("http://localhost:3000/entries/:id")
+  return $resource("http://localhost:3000/entries/:id", {}, {
+    update: {method: "PUT"}
+  })
 }
 
   PicIndexControllerFunc.$inject = [ "PicFactory" ];
@@ -44,6 +46,7 @@ function PicFactoryFunc($resource) {
     indexVm.create = function($state) {
       indexVm.newPic.$save().then(function(res) {
         indexVm.pics.push(res)
+        indexVm.newPic = new PicFactory();
       })
     };
   }
@@ -54,7 +57,7 @@ function PicFactoryFunc($resource) {
     showVm.pic = PicFactory.get({id: $stateParams.id});
 
     showVm.update = function() {
-      pics[$stateParams.id].title = showVm.pic;
+      showVm.pic.$update({id: $stateParams.id});
     };
 
     showVm.delete = function() {
